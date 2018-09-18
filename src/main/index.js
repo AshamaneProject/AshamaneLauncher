@@ -26,17 +26,7 @@ function createMainWindow()
     });
     window.setMenu(null);
 
-    autoUpdater.on('update-not-available', () => {
-        CheckFilesAndStartWoW(window);
-    });
-
-    autoUpdater.on('update-available', () => {
-        window.webContents.send('update-in-progress', localize.translate('Updating'));
-    });
-
-    autoUpdater.on('update-downloaded', () => {
-        autoUpdater.quitAndInstall();
-    });
+    InitAutoUpdater();
 
     window.loadURL(formatUrl({
         pathname: path.join(__static, 'index.html'),
@@ -59,6 +49,21 @@ function createMainWindow()
     });
 
     return window;
+}
+
+function InitAutoUpdater()
+{
+    autoUpdater.on('update-not-available', () => {
+        CheckFilesAndStartWoW(window);
+    });
+
+    autoUpdater.on('update-available', () => {
+        window.webContents.send('update-in-progress', localize.translate('Updating'));
+    });
+
+    autoUpdater.on('update-downloaded', () => {
+        autoUpdater.quitAndInstall();
+    });
 }
 
 function CheckFilesAndStartWoW(window)
